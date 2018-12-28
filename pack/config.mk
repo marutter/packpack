@@ -10,6 +10,7 @@ BUILDDIR?=$(CURDIR)/build
 #
 ifeq ($(PRODUCT),) # Guess from Debian package
 PRODUCT := $(word 2,$(shell grep Source: debian/control 2>/dev/null))
+DEB.VERSION := $(word 2,$(shell grep Version: DESCRIPTION 2>/dev/null))
 endif
 ifeq ($(PRODUCT),) # Guess from RPM package
 PRODUCT := $(word 2,$(shell grep Name: rpm/*.spec 2>/dev/null))
@@ -29,7 +30,7 @@ endif
 DESCRIBE := $(shell git describe --long --always)
 
 #
-# Semantic version of the software, e.g. 2.4.35.
+# Semantic version of the s debian/controloftware, e.g. 2.4.35.
 #
 # Major and minor versions are extracted from the closest git tag.
 # Patch level is the number of additional commits after this tag.
@@ -42,7 +43,8 @@ DESCRIBE := $(shell git describe --long --always)
 # Sic: please follow Semantic Versioning (http://semver.org),
 # Debian policies and Fedora guidelines then planning your releases.
 #
-VERSION ?= $(shell echo $(DESCRIBE) | sed -n 's/^\([0-9\.]*\)-\([0-9]*\)-\([a-z0-9]*\)/\1.\2/p')
+# Changed this to use version from DESCRIPTION file - MAR
+VERSION ?= $(shell echo $(DEB.VERSION) | sed -n 's/^\([0-9\.]*\)-\([0-9]*\)-\([a-z0-9]*\)/\1.\2/p')
 ifeq ($(VERSION),) # Fallback
 VERSION := 0.0.1
 endif
@@ -64,11 +66,11 @@ RELEASE ?= 1
 #   paradox.  The logic suggests to use 12 hexdigits for the Linux
 #   kernel, and 9 to 10 for Git itself.
 #
-ABBREV ?= $(shell echo $(DESCRIBE) | sed -n 's/^\([0-9\.]*\)-\([0-9]*\)-\([a-z0-9]*\)/\3/p')
+ABBREV ?= $(shell echo $(DEB.VERSION) | sed -n 's/^\([0-9\.]*\)-\([0-9]*\)-\([a-z0-9]*\)/\3/p')
 
 # Name, email and text for changelog entry
-CHANGELOG_NAME ?= PackPack
-CHANGELOG_EMAIL ?= build@tarantool.org
+CHANGELOG_NAME ?= CRANBuilders
+CHANGELOG_EMAIL ?= marutter@gmail.com
 CHANGELOG_TEXT ?= Automated build
 
 # Extra arguments for tar
