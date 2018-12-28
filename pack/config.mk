@@ -44,6 +44,7 @@ DESCRIBE := $(shell git describe --long --always)
 # Debian policies and Fedora guidelines then planning your releases.
 #
 # Changed this to use version from DESCRIPTION file - MAR
+# The deb.mk script also has possibilities
 VERSION ?= $(shell echo $(DEB.VERSION) | sed -n 's/^\([0-9\.]*\)-\([0-9]*\)-\([a-z0-9]*\)/\1.\2/p')
 ifeq ($(VERSION),) # Fallback
 VERSION := 0.0.1

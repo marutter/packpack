@@ -10,6 +10,8 @@ DEB_VERSION := $(VERSION).$(ABBREV)
 $(info Added git hash to Debian package version: $(VERSION) => $(DEB_VERSION))
 endif
 endif
+DEB_VERSION := $(word 2,$(shell dpkg-parsechangelog|grep Version))
+$(info Here is the new version: $(DEB_VERSION))
 
 DPKG_ARCH:=$(shell dpkg --print-architecture)
 DPKG_CHANGES:=$(PRODUCT)_$(DEB_VERSION)-$(RELEASE)_$(DPKG_ARCH).changes
