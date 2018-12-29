@@ -10,7 +10,7 @@ BUILDDIR?=$(CURDIR)/build
 #
 ifeq ($(PRODUCT),) # Guess from Debian package
 PRODUCT := $(word 2,$(shell grep Source: debian/control 2>/dev/null))
-DEB.VERSION := $(word 2,$(shell grep Version: DESCRIPTION 2>/dev/null))
+DEB.VERSION := $(word 2,$(shell dpkg-parsechangelog|grep Version))
 endif
 ifeq ($(PRODUCT),) # Guess from RPM package
 PRODUCT := $(word 2,$(shell grep Name: rpm/*.spec 2>/dev/null))
@@ -45,7 +45,7 @@ DESCRIBE := $(shell git describe --long --always)
 #
 # Changed this to use version from DESCRIPTION file - MAR
 # The deb.mk script also has possibilities
-VERSION ?= $(shell echo $(DEB.VERSION) | sed -n 's/^\([0-9\.]*\)-\([0-9]*\)-\([a-z0-9]*\)/\1.\2/p')
+VERSION ?= $(DEB.VERSION)
 ifeq ($(VERSION),) # Fallback
 VERSION := 0.0.1
 endif
@@ -67,7 +67,7 @@ RELEASE ?= 1
 #   paradox.  The logic suggests to use 12 hexdigits for the Linux
 #   kernel, and 9 to 10 for Git itself.
 #
-ABBREV ?= $(shell echo $(DEB.VERSION) | sed -n 's/^\([0-9\.]*\)-\([0-9]*\)-\([a-z0-9]*\)/\3/p')
+ABBREV ?= CRANBuilders
 
 # Name, email and text for changelog entry
 CHANGELOG_NAME ?= CRANBuilders
