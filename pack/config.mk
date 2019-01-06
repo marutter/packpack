@@ -27,7 +27,7 @@ endif
 # The output of `git describe` to generate VERSION, ABBREV and
 # ./VERSION file.
 #
-DESCRIBE := $(shell git describe --long --always)
+# DESCRIBE := $(shell git describe --long --always)
 
 #
 # Semantic version of the s debian/controloftware, e.g. 2.4.35.
